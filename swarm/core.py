@@ -1,6 +1,8 @@
 # Standard library imports
 import copy
 import json
+import time
+from datetime import datetime
 from collections import defaultdict
 from typing import List, Callable, Union
 
@@ -18,6 +20,7 @@ from .types import (
     Function,
     Response,
     Result,
+    Memory,
 )
 
 __CTX_VARS_NAME__ = "context_variables"
@@ -28,7 +31,7 @@ class Swarm:
         if not client:
             client = OpenAI()
         self.client = client
-
+        self.memory = Memory()
     def get_chat_completion(
         self,
         agent: Agent,
@@ -133,7 +136,6 @@ class Swarm:
             partial_response.context_variables.update(result.context_variables)
             if result.agent:
                 partial_response.agent = result.agent
-
         return partial_response
 
     def run_and_stream(
@@ -220,13 +222,17 @@ class Swarm:
             if partial_response.agent:
                 active_agent = partial_response.agent
 
-        yield {
-            "response": Response(
+        response = Response(
                 messages=history[init_len:],
                 agent=active_agent,
                 context_variables=context_variables,
-            )
+                timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        )
+        self.memory.memory.append(response)
+        yield {
+            "response": response
         }
+        
 
     def run(
         self,
@@ -285,8 +291,11 @@ class Swarm:
             if partial_response.agent:
                 active_agent = partial_response.agent
 
-        return Response(
+        response =  Response(
             messages=history[init_len:],
             agent=active_agent,
             context_variables=context_variables,
+            timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         )
+        self.memory.memory.append(response)
+        return response

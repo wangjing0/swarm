@@ -24,7 +24,7 @@ class Response(BaseModel):
     messages: List = []
     agent: Optional[Agent] = None
     context_variables: dict = {}
-
+    timestamp: Optional[str] = None
 
 class Result(BaseModel):
     """
@@ -39,3 +39,11 @@ class Result(BaseModel):
     value: str = ""
     agent: Optional[Agent] = None
     context_variables: dict = {}
+
+class Memory(BaseModel):
+    """
+    Swarm agents memory, 
+    including messages, agents, and context variables.
+    timestamp when the response is generated.
+    """
+    memory: List[Response] = []
