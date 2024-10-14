@@ -105,6 +105,7 @@ while True:
 
 client.memory.model_dump()
 ```
+```
 {'memory': [{'messages': [{'content': 'Hello! How can I assist you today?',
      'sender': 'Triage Agent',
      'role': 'assistant',
