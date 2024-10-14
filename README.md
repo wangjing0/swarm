@@ -40,25 +40,30 @@ print(client.memory.model_dump())
 ```
 
 ```
-from swarm.types import Result
-
-sales_agent = Agent(name="Sales Agent")
-
-def talk_to_sales():
-   print("Hello, World!")
-   return Result(
-       value="Done",
-       agent=sales_agent,
-       context_variables={"department": "sales"}
-   )
-
-agent = Agent(functions=[talk_to_sales])
-
-response = client.run(
-   agent=agent,
-   messages=[{"role": "user", "content": "Transfer me to sales"}],
-   context_variables={"user_name": "John"}
-)
-print(response.agent.name)
-print(response.context_variables)
+{'memory': [{'messages': [{'content': None,
+     'role': 'assistant',
+     'function_call': None,
+     'tool_calls': [{'id': 'call_vJvmKrQZU2v7FVLgbX3TVz9b',
+       'function': {'arguments': '{}', 'name': 'transfer_to_agent_b'},
+       'type': 'function'}],
+     'refusal': None,
+     'sender': 'Agent A'},
+    {'role': 'tool',
+     'tool_call_id': 'call_vJvmKrQZU2v7FVLgbX3TVz9b',
+     'tool_name': 'transfer_to_agent_b',
+     'content': '{"assistant": "Agent B"}'},
+    {'content': '正在将您转接到B代理。',
+     'role': 'assistant',
+     'function_call': None,
+     'tool_calls': None,
+     'refusal': None,
+     'sender': 'Agent B'}],
+   'agent': {'name': 'Agent B',
+    'model': 'gpt-4o',
+    'instructions': 'Only speak in Chinese.',
+    'functions': [],
+    'tool_choice': None,
+    'parallel_tool_calls': True},
+   'context_variables': {},
+   'timestamp': '2024-10-13 23:07:21'}]}
 ```
