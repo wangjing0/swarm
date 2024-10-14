@@ -1,10 +1,11 @@
-# modified openai's swarm agents with memory 
+# OpenAI's swarm agents with memory 
 
+## install
 ```python
 pip install git+https://github.com/jingwang0/swarm.git
 ```
 
-example:
+## example
 ```python
 from swarm import Swarm, Agent
 
