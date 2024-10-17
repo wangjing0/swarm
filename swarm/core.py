@@ -223,7 +223,7 @@ class Swarm:
                 active_agent = partial_response.agent
 
         response = Response(
-                messages=history[init_len:],
+                messages=history[init_len-1:],
                 agent=active_agent,
                 context_variables=context_variables,
                 timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -258,7 +258,7 @@ class Swarm:
         active_agent = agent
         context_variables = copy.deepcopy(context_variables)
         history = copy.deepcopy(messages)
-        init_len = len(messages)
+        init_len = len(messages) # last message is user message
 
         while len(history) - init_len < max_turns and active_agent:
 
@@ -292,7 +292,7 @@ class Swarm:
                 active_agent = partial_response.agent
 
         response =  Response(
-            messages=history[init_len:],
+            messages=history[init_len-1:],
             agent=active_agent,
             context_variables=context_variables,
             timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
